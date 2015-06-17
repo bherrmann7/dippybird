@@ -2,6 +2,10 @@
 
 A simple clojure based blog.   Uses mysql for storing entries (overkill?)
 
+## See it in action
+
+    http://jadn.com/bob
+
 ## Prerequisites
 
 set up mysql
