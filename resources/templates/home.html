@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container-fluid">
+  {%if admin %}
+  <div class="row-fluid">
+    <div class="span12">
+      &nbsp;<div class="pull-right"><a href="{{servlet-context}}/new">New</a></div>
+    </div>
+  </div>
+  {% endif %}
+  {% for entry in entries %}
+
+    <div class="row-fluid">
+      <div class="span12" style='background-color: #d3d3d3;padding: 4px;'>
+        {{ entry.title }}&nbsp;
+        <span style="float:right">
+        {% if admin %}
+           <a href="{{servlet-context}}/edit?id={{entry.id}}" >Edit</a>&nbsp;<a href="{{servlet-context}}/delete?id={{entry.id}}">Delete</a>&nbsp;
+         {% endif %}
+          {{entry.date_created}}
+        </span>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span12">
+        <br>
+        <table>
+          {{entry.body|safe}}
+        </table>
+        <br>
+      </div>
+    </div>
+   {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="h1">Create/Edit entry</div>
+<br>
+<br>
+<form method="post" action="{{servlet-context}}/edit">
+  {{tok|safe}}
+   <input type="hidden" name="id" value="{{entry.id}}"/>
+
+    Date <input type="text" name="date" value="{{entry.date_created}}"/>
+    <br>
+  <br>
+    Title <input name=title type="text" value="{{entry.title}}" size="90"/>
+
+  <br><br>
+
+<textarea name=body cols="100" rows="10">
+        {{entry.body}}
+</textarea>
+  <br>  <br>
+    <input class='btn btn-primary' type="submit" value="Post"/>
+</form>
+
+{% endblock %}
