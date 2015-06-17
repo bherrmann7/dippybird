@@ -2,9 +2,9 @@
 
 A simple clojure based blog.   Uses mysql for storing entries (overkill?)
 
-## See it in action
+## See It In Action
 
-    http://jadn.com/bob
+<a href="http://jadn.com/bob">http://jadn.com/bob</a>
 
 ## Prerequisites
 
