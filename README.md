@@ -8,6 +8,10 @@ I'm a web application developer, I can't use someone else blogging software.    
 A simple blogging application is pretty straightforward and I get to design and I get to craft a solution that meets
 my exact needs.
 
+## See It In Action
+
+<a href="http://jadn.com/bob">http://jadn.com/bob</a>
+
 ## Reusable by Others
 
 My intention is that this application can be eaily reused by others.  I intend to use it for multiple blogs myself
@@ -16,10 +20,6 @@ configuration and customization straightforward.
  
 I image the ideal end user would be another hacker who is familure with mysql and clojure.    They might just look
 at this project to see how something is done, or may customize it to suit their own specific needs.
-
-## See It In Action
-
-<a href="http://jadn.com/bob">http://jadn.com/bob</a>
 
 ## Prerequisites
 
