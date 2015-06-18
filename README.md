@@ -4,9 +4,9 @@ A simple clojure based blog.   Uses mysql for storing entries (overkill?)
 
 ## Motivation
 
-I'm a web application developer, I can't use someone else blog software.    That would be like being a shoemaker and
-wearing someone else's shoes.     A simple blogging application is pretty straightforward and I get to design
-and craft a solution that meets my own desires.
+I'm a web application developer, I can't use someone else blogging software.    A shoemaker should wear his own shoes.
+A simple blogging application is pretty straightforward and I get to design and I get to craft a solution that meets
+my exact needs.
 
 ## Reusable by Others
 
