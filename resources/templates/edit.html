@@ -35,7 +35,7 @@
 
 </div>
     <div class="col-md-5">
-        <form class="form-inline" method="post" action="/upload" enctype="multipart/form-data">
+        <form class="form-inline" method="post" action="{{servlet-context}}/upload" enctype="multipart/form-data">
             {{tok|safe}}
             <div class="form-group">
                 <input type="file" name="file" class="form-control" id="file" placeholder="YourImage.png">
@@ -46,7 +46,7 @@
 
         <div class="well">
             {% for image in images %}
-                <a href="/res/aimg/{{image}}" target="preview">{{image}}</a><br>
+                <a href="{{servlet-context}}/res/aimg/{{image}}" target="preview">{{image}}</a><br>
             {% endfor %}
         </div>
 
