@@ -1,5 +1,6 @@
 (ns dippybird.middleware
   (:require [dippybird.session :as session]
+            [dippybird.config]
             [dippybird.layout :refer [*servlet-context*]]
             [taoensso.timbre :as timbre]
             [environ.core :refer [env]]
@@ -53,7 +54,7 @@
       (wrap-idle-session-timeout
         {:timeout (* 60 30)
          :timeout-response (redirect "/")})
-      (ring.middleware.file/wrap-file "/home/bob/wpub")
+      (ring.middleware.file/wrap-file (:image-serve-root dippybird.config/conf) )
       (wrap-defaults
         (assoc-in site-defaults [:session :store] (memory-store session/mem)))
       wrap-servlet-context
