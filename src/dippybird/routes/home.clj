@@ -92,7 +92,6 @@
   (GET "/new" [] (new-page))
   (GET "/edit" [id] (edit-page id))
   (POST "/edit" [id date title body] (edit-post id date title body))
-  (GET "/links" [] (layout/render "links.html"))
   (GET "/delete" [id] (delete-page id))
   (GET "/about" [] (layout/render "about.html"))
 
