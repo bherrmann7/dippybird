@@ -18,7 +18,7 @@ My intention is that this application can be eaily reused by others.  I intend t
 (one for me, and a separate blog about my kids, and some project specific blogs), so I will strive to keep the 
 configuration and customization straightforward.
  
-I image the ideal end user would be another hacker who is familure with mysql and clojure.    They might just look
+I image the ideal end user would be another hacker who is familiar with mysql and clojure.    They might just look
 at this project to see how something is done, or may customize it to suit their own specific needs.
 
 ## Prerequisites
