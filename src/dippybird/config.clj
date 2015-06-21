@@ -8,8 +8,7 @@
 ; or perhaps the inbound hosts name
 
 (def conf
-  {
-    ; path where images are served from
+  {; path where images are served from
    :image-serve-root "/home/bob/wpub/"
 
    ; actual location of files (historically, I've always used res/aimg/... for images in blogs
@@ -17,7 +16,4 @@
 
    ; use this to login via a url like so, /login/PASSWORD   Putting the login in a URL makes it easy to
    ; just use a bookmark as a way to login
-   :admin-pass (slurp "/home/bob/bin/bobblog.pass")
-
-   }
-  )
+   :admin-pass (slurp "/home/bob/bin/bobblog.pass")})

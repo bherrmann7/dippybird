@@ -5,11 +5,11 @@
 (def db-spec (read-string (slurp (str (System/getProperty "user.home") "/bin/dippybird-db.edn"))))
 
 (comment typical db dippybird-db.edn
-           {; :classname "org.postgresql.Driver"
-            :subprotocol "mysql"
-            :subname     "//localhost/bob_blog"
-            :user        "bobblog"
-            :password    "bla"})
+         {; :classname "org.postgresql.Driver"
+          :subprotocol "mysql"
+          :subname     "//localhost/bob_blog"
+          :user        "bobblog"
+          :password    "bla"})
 
 (defqueries "sql/dippy.sql")
 

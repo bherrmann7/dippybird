@@ -11,9 +11,7 @@
             [ring.middleware.session-timeout :refer [wrap-idle-session-timeout]]
             [ring.middleware.session.memory :refer [memory-store]]
             [ring.middleware.format :refer [wrap-restful-format]]
-            [ring.middleware.file]
-            
-            ))
+            [ring.middleware.file]))
 
 (defn wrap-servlet-context [handler]
   (fn [request]
@@ -52,11 +50,11 @@
       
       (wrap-restful-format :formats [:json-kw :edn :transit-json :transit-msgpack])
       (wrap-idle-session-timeout
-        {:timeout (* 60 30)
-         :timeout-response (redirect "/")})
-      (ring.middleware.file/wrap-file (:image-serve-root dippybird.config/conf) )
+       {:timeout (* 60 30)
+        :timeout-response (redirect "/")})
+      (ring.middleware.file/wrap-file (:image-serve-root dippybird.config/conf))
       (wrap-defaults
-        (assoc-in site-defaults [:session :store] (memory-store session/mem)))
+       (assoc-in site-defaults [:session :store] (memory-store session/mem)))
       wrap-servlet-context
       wrap-internal-error))
 

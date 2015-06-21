@@ -9,24 +9,20 @@
             [clj-time.coerce]
             [ring.middleware.multipart-params :as mp]
             [clojure.java.io :as io]
-            [dippybird.config]
-            )
-  (:import [java.io File FileInputStream FileOutputStream])
-  )
+            [dippybird.config])
+  (:import [java.io File FileInputStream FileOutputStream]))
 
 (def custom-formatter (f/formatter "dd-MMM-yyyy hh:mm aa"))
 
 (defn fix-date [entry]
-  (conj entry {:date_created (f/unparse custom-formatter (clj-time.coerce/from-long (.getTime (:date_created entry))))})
-  )
+  (conj entry {:date_created (f/unparse custom-formatter (clj-time.coerce/from-long (.getTime (:date_created entry))))}))
 
 (defn home-page [req]
   (layout/render
-    "home.html" {:admin (:admin (:session req)) :entries (map fix-date (dippybird.db/all-entries dippybird.db/db-spec ))}))
+   "home.html" {:admin (:admin (:session req)) :entries (map fix-date (dippybird.db/all-entries dippybird.db/db-spec))}))
 
 (defn get-images []
-  (map #(.getName %) (reverse (sort-by #(.lastModified %) (file-seq (clojure.java.io/file (:image-store-dir dippybird.config/conf))))))
-  )
+  (map #(.getName %) (reverse (sort-by #(.lastModified %) (file-seq (clojure.java.io/file (:image-store-dir dippybird.config/conf)))))))
 
 (defn edit-page [id]
   ; (if (empty? {session :session} )
@@ -42,29 +38,25 @@
     (layout/render "edit.html" {:tok (ring.util.anti-forgery/anti-forgery-field) :images (get-images)  :entry entry})
     ;    (layout/render "login.html")
     ;  )
-    )
-  )
+    ))
 
 
 (defn send-redir [where]
-  (ring.util.response/redirect (str layout/*servlet-context* where))
-  )
+  (ring.util.response/redirect (str layout/*servlet-context* where)))
 
 (defn send-home [] (send-redir "/"))
 
-(defn edit-post [id date title body  ]
+(defn edit-post [id date title body]
   (println "boo" id date title body)
   (if (empty? id)
-    (dippybird.db/insert-new-post! dippybird.db/db-spec body (.toDate (f/parse custom-formatter date)) title  )
-    (dippybird.db/update-post! dippybird.db/db-spec (.toDate (f/parse custom-formatter date)) title body id) )
+    (dippybird.db/insert-new-post! dippybird.db/db-spec body (.toDate (f/parse custom-formatter date)) title)
+    (dippybird.db/update-post! dippybird.db/db-spec (.toDate (f/parse custom-formatter date)) title body id))
 
-  (send-home)
-  )
+  (send-home))
 
 (defn delete-page [id]
-  (dippybird.db/delete-post! dippybird.db/db-spec id  )
-  (send-home)
-  )
+  (dippybird.db/delete-post! dippybird.db/db-spec id)
+  (send-home))
 
 (defn set-user! [id {session :session}]
   (->    (send-home)
@@ -78,8 +70,8 @@
 ; http://www.luminusweb.net/docs/routes.md
 (defn file-path [path & [filename]]
   (java.net.URLDecoder/decode
-    (str path File/separator filename)
-    "utf-8"))
+   (str path File/separator filename)
+   "utf-8"))
 
 (defn upload-file
   "uploads a file to the target folder
@@ -94,20 +86,18 @@
         (.flush out)))))
 
 (defroutes home-routes
-           (GET "/" req [] (home-page req))
-           (GET "/login/:password" [password :as req] (set-user! password req))
-           (GET "/logout" [req] (remove-user! req))
-           (GET "/new" [] (new-page))
-           (GET "/edit" [id] (edit-page id))
-           (POST "/edit" [id date title body] (edit-post id date title body))
-           (GET "/links" [] (layout/render "links.html"))
-           (GET "/delete" [id] (delete-page id))
-           (GET "/about" [] (layout/render "about.html"))
+  (GET "/" req [] (home-page req))
+  (GET "/login/:password" [password :as req] (set-user! password req))
+  (GET "/logout" [req] (remove-user! req))
+  (GET "/new" [] (new-page))
+  (GET "/edit" [id] (edit-page id))
+  (POST "/edit" [id date title body] (edit-post id date title body))
+  (GET "/links" [] (layout/render "links.html"))
+  (GET "/delete" [id] (delete-page id))
+  (GET "/about" [] (layout/render "about.html"))
 
-           (POST "/upload" [file]
-             (upload-file (:image-store-dir dippybird.config/conf) file)
-             (send-redir "/new")
-             )
-           )
+  (POST "/upload" [file]
+    (upload-file (:image-store-dir dippybird.config/conf) file)
+    (send-redir "/new")))
 
 

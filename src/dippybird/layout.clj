@@ -16,10 +16,10 @@
 (defn render [template & [params]]
   (-> template
       (parser/render-file
-        (assoc params
-          :page template
-          :dev (env :dev)
-          :csrf-token *anti-forgery-token*
-          :servlet-context *servlet-context*))
+       (assoc params
+              :page template
+              :dev (env :dev)
+              :csrf-token *anti-forgery-token*
+              :servlet-context *servlet-context*))
       response
       (content-type "text/html; charset=utf-8")))

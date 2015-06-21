@@ -16,8 +16,8 @@
 (defonce nrepl-server (atom nil))
 
 (defroutes base-routes
-           (route/resources "/")
-           (route/not-found "Not Found"))
+  (route/resources "/")
+  (route/not-found "Not Found"))
 
 (defn start-nrepl
   "Start a network repl for debugging when the :repl-port is set in the environment."
@@ -40,16 +40,16 @@
    put any initialization code here"
   []
   (timbre/set-config!
-    [:appenders :rotor]
-    {:min-level             :info
-     :enabled?              true
-     :async?                false ; should be always false for rotor
-     :max-message-per-msecs nil
-     :fn                    rotor/appender-fn})
+   [:appenders :rotor]
+   {:min-level             :info
+    :enabled?              true
+    :async?                false ; should be always false for rotor
+    :max-message-per-msecs nil
+    :fn                    rotor/appender-fn})
 
   (timbre/set-config!
-    [:shared-appender-config :rotor]
-    {:path "dippybird.log" :max-size (* 512 1024) :backlog 10})
+   [:shared-appender-config :rotor]
+   {:path "dippybird.log" :max-size (* 512 1024) :backlog 10})
 
   (if (env :dev) (parser/cache-off!))
   (start-nrepl)
@@ -69,8 +69,8 @@
 
 (def app
   (-> (routes
-        home-routes
-        
-        base-routes)
+       home-routes
+       
+       base-routes)
       development-middleware
       production-middleware))
