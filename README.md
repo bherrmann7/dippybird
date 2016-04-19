@@ -47,5 +47,6 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2015 Bob Herrmann
+Distributed under the [MIT License](http://opensource.org/licenses/MIT).
+Copyright © 2015,2016 Bob Herrmann
 
