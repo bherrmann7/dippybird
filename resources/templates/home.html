@@ -19,7 +19,7 @@
         {% if admin %}
            <a href="{{servlet-context}}/edit?id={{entry.id}}" >Edit</a>&nbsp;<a href="{{servlet-context}}/delete?id={{entry.id}}">Delete</a>&nbsp;
          {% endif %}
-          {{entry.date_created}}
+          {{entry.fmt-date-created}}
         </span>
       </div>
     </div>

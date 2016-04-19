@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Bobs Blog</title>
+  <updated>{{iso-lastest-entry}}</updated>
+  <author>
+    <name>Bob Herrmann</name>
+  </author>
+  <id>http://jadn.com/bob</id>
+  {% for entry in entries %}
+  <entry>
+    <title>{{ entry.title }}</title>
+    <updated>{{entry.iso-date-created}}</updated>
+    <id>http://jadn.com/bob/#{{entry.iso-date-created}}</id>
+    <content type="html">
+      <![CDATA[
+      {{entry.body|safe}}
+      ]]>
+    </content>
+  </entry>
+  {% endfor %}
+</feed>
+

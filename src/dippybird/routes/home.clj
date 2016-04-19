@@ -15,11 +15,19 @@
 (def custom-formatter (f/formatter "dd-MMM-yyyy hh:mm aa"))
 
 (defn fix-date [entry]
-  (conj entry {:date_created (f/unparse custom-formatter (clj-time.coerce/from-long (.getTime (:date_created entry))))}))
+  (conj entry {:fmt-date-created (f/unparse custom-formatter (clj-time.coerce/from-long (.getTime (:date_created entry))))
+               :iso-date-created (clj-time.coerce/to-string (clj-time.coerce/from-long (.getTime (:date_created entry))))
+               }))
 
-(defn home-page [req]
+(defn home-page [ req]
   (layout/render
    "home.html" {:admin (:admin (:session req)) :entries (map fix-date (dippybird.db/all-entries dippybird.db/db-spec))}))
+
+(defn rss-page [category req]
+  (let [x (filter #(.contains (:title %) category) (map fix-date (dippybird.db/all-entries dippybird.db/db-spec)))]
+  (layout/render
+    "rss.xml" {:admin (:admin (:session req)) :iso-lastest-entry (:iso-date-created (first x)) :entries x})))
+
 
 (defn get-images []
   (map #(.getName %) (reverse (sort-by #(.lastModified %) (file-seq (clojure.java.io/file (:image-store-dir dippybird.config/conf)))))))
@@ -87,6 +95,7 @@
 
 (defroutes home-routes
   (GET "/" req [] (home-page req))
+  (GET "/rss/:category" [category :as req] (rss-page category req))
   (GET "/login/:password" [password :as req] (set-user! password req))
   (GET "/logout" [req] (remove-user! req))
   (GET "/new" [] (new-page))

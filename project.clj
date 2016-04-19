@@ -37,9 +37,7 @@
             [lein-ancient "0.6.5"]
             [lein-cljfmt "0.1.10"]
             ]
-  
 
-  
   :ring {:handler dippybird.handler/app
          :init    dippybird.handler/init
          :destroy dippybird.handler/destroy
