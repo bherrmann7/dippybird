@@ -41,7 +41,8 @@
 
 
 (defn new-page []
-  (let [entry {:date_created (f/unparse custom-formatter nil)}]
+
+  (let [entry {:fmt-date-created (f/unparse custom-formatter nil)}]
     ; (if (empty? {session :session} )
     (layout/render "edit.html" {:tok (ring.util.anti-forgery/anti-forgery-field) :images (get-images)  :entry entry})
     ;    (layout/render "login.html")
