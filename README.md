@@ -29,6 +29,20 @@ set up mysql
     mysql> grant all PRIVILEGES on someblog.* to 'someuser'@'localhost' identified by 'YOUR_PASS';
     mysql> @schema.sql
 
+set updatabase connection information for app.
+<pre>
+$ cat ~/bin/dippybird-db.edn
+{
+ :subprotocol "mysql"
+              :subname     "//localhost/bobblog"
+              :user        "someuser"
+              :password    "YOUR_PASS"
+}
+</pre>
+
+Setup password for creating blog entries.
+<pre>
+$ cat
 
 ## Running
 

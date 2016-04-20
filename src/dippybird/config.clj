@@ -16,4 +16,4 @@
 
    ; use this to login via a url like so, /login/PASSWORD   Putting the login in a URL makes it easy to
    ; just use a bookmark as a way to login
-   :admin-pass (slurp "/home/bob/bin/bobblog.pass")})
+   :admin-pass (slurp "/home/bob/bin/dippyblog.pass")})
