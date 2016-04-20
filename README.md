@@ -50,16 +50,21 @@ To start a web server for the application, run:
 
     lein ring server
     
-## TODO
-    
+## Features
     - image upload and handling
-    - labels / rss
+    - use markdown formatting
+    - labels / rss (add #Bla on the title, and then access /rss/Bla as rss feed)
+    
+## TODO
+    - better user/dev docs (need to test by asking another developer to try using)
+    - document deployment (or example)
     - email subscription
     - comments
-    - use markdown for entries
-    - entry preview
+    - entry preview ?
+   
 
 ## License
 
-Copyright © 2015 Bob Herrmann
+Distributed under the [MIT License](http://opensource.org/licenses/MIT).
+Copyright © 2015,2016 Bob Herrmann
 
