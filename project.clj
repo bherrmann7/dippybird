@@ -20,8 +20,8 @@
                  [ring-server "0.4.0"]
                  [yesql "0.4.0"]
                  [mysql/mysql-connector-java "5.1.32"]
-                 [clj-time "0.9.0"]
-                 ]
+                 [clj-time "0.9.0"]]
+
 
   :min-lein-version "2.0.0"
   :uberjar-name "dippybird.jar"
@@ -35,8 +35,8 @@
   :plugins [[lein-ring "0.9.1"]
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
-            [lein-cljfmt "0.1.10"]
-            ]
+            [lein-cljfmt "0.1.10"]]
+
 
   :ring {:handler dippybird.handler/app
          :init    dippybird.handler/init
@@ -53,8 +53,8 @@
              :aot :all}
    :dev {:dependencies [[ring-mock "0.1.5"]
                         [ring/ring-devel "1.3.2"]
-                        [pjstadig/humane-test-output "0.7.0"]
-                        ]
+                        [pjstadig/humane-test-output "0.7.0"]]
+
          :source-paths ["env/dev/clj"]
          
          
