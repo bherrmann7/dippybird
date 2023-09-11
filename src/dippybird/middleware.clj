@@ -2,10 +2,10 @@
   (:require [dippybird.session :as session]
             [dippybird.config]
             [dippybird.layout :refer [*servlet-context*]]
-            [taoensso.timbre :as timbre]
-            [environ.core :refer [env]]
+  ;;          [taoensso.timbre :as timbre]
+;;            [environ.core :refer [env]]
             [selmer.middleware :refer [wrap-error-page]]
-            [prone.middleware :refer [wrap-exceptions]]
+;;            [prone.middleware :refer [wrap-exceptions]]
             [ring.util.response :refer [redirect]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.session-timeout :refer [wrap-idle-session-timeout]]
@@ -29,25 +29,26 @@
     (try
       (handler req)
       (catch Throwable t
-        (timbre/error t)
+        ;;(timbre/error t)
+        (.printStackTrace t)
         {:status 500
          :headers {"Content-Type" "text/html"}
-         :body "<body>
-                  <h1>Something very bad has happened!</h1>
-                  <p>We've dispatched a team of highly trained gnomes to take care of the problem.</p>
-                </body>"}))))
+         :body (str "<body>
+                  <h1>An exception occurred...</h1>
+                  <p>Thread message: " (.getMessage t)
+                 "<pre>" (pr-str t) "</pre>"
+                "</body>")}))))
 
 (defn development-middleware [handler]
-  (if (env :dev)
+  (if true #_(env :dev)
     (-> handler
         wrap-error-page
-        wrap-exceptions)
+        #_wrap-exceptions)
     handler))
 
 
 (defn production-middleware [handler]
   (-> handler
-      
       (wrap-restful-format :formats [:json-kw :edn :transit-json :transit-msgpack])
       (wrap-idle-session-timeout
        {:timeout (* 60 30)

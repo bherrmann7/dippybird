@@ -1,5 +1,5 @@
-(ns dippybird.session
-  (:require [cronj.core :refer [cronj]]))
+(ns dippybird.session)
+
 
 (defonce mem (atom {}))
 
@@ -12,7 +12,7 @@
 (defn clear-expired-sessions []
   (clojure.core/swap! mem #(->> % (filter expired?) (into {}))))
 
-(def cleanup-job
+#_(def cleanup-job
   (cronj
    :entries
    [{:id "session-cleanup"

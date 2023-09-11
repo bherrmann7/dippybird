@@ -1,72 +1,67 @@
 (ns dippybird.routes.home
   (:require [dippybird.layout :as layout]
-            dippybird.db
+            [dippybird.db :as db ]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :refer [content-type response redirect file-response]]
             [clojure.java.io :as io]
             [ring.util.anti-forgery]
-            [clj-time.format :as f]
-            [clj-time.coerce]
             [ring.middleware.multipart-params :as mp]
             [clojure.java.io :as io]
             [dippybird.config])
   (:import [java.io File FileInputStream FileOutputStream]))
 
-(def custom-formatter (f/formatter "dd-MMM-yyyy hh:mm aa"))
+(def human-date-formatter (java.time.format.DateTimeFormatter/ofPattern "dd-MMM-yyyy hh:mm a"))
+(def dir-date-formatter (java.time.format.DateTimeFormatter/ofPattern "yyyy-MM-dd-hh:mm-a"))
 
 (defn fix-date [entry]
-  (conj entry {:fmt-date-created (f/unparse custom-formatter (clj-time.coerce/from-long (.getTime (:date_created entry))))
-               :iso-date-created (clj-time.coerce/to-string (clj-time.coerce/from-long (.getTime (:date_created entry))))}))
-
+  (conj entry {:fmt-date-created (:date_created entry)
+               :iso-date-created "iso-date-for-rss" }))
 
 (defn home-page [req]
   (layout/render
-    "home.html" {:admin (:admin (:session req)) :entries (map fix-date (dippybird.db/all-entries dippybird.db/db-spec))}))
+    "home.html" {:admin (:admin (:session req)) :entries (map fix-date (db/all-entries db/db-spec))}))
 
 (defn rss-page [category req]
-  (let [x (filter #(.contains (:title %) category) (map fix-date (dippybird.db/all-entries dippybird.db/db-spec)))]
+  (let [x (filter #(.contains (:title %) category) (map fix-date (db/all-entries db/db-spec)))]
     (content-type
       (layout/render
         "rss.xml" {:admin (:admin (:session req)) :iso-lastest-entry (:iso-date-created (first x)) :entries x})
       "application/atom+xml")))
-
 
 (defn get-images []
   (map #(.getName %) (reverse (sort-by #(.lastModified %) (file-seq (clojure.java.io/file (:image-store-dir dippybird.config/conf)))))))
 
 (defn edit-page [id]
   ; (if (empty? {session :session} )
-  (layout/render "edit.html" {:tok (ring.util.anti-forgery/anti-forgery-field) :images (get-images) :entry (fix-date (first (dippybird.db/fetch-entry dippybird.db/db-spec id)))}))
+  (layout/render "edit.html" {:tok (ring.util.anti-forgery/anti-forgery-field) :images (get-images) :entry (fix-date (first (db/fetch-entry db/db-spec id)))}))
   ;    (layout/render "login.html")
   ;  )
 
-
-
 (defn new-page []
-
-  (let [entry {:fmt-date-created (f/unparse custom-formatter nil)}]
+  (let [entry {:fmt-date-created (.format human-date-formatter (java.time.LocalDateTime/now))}]
     ; (if (empty? {session :session} )
     (layout/render "edit.html" {:tok (ring.util.anti-forgery/anti-forgery-field) :images (get-images) :entry entry})))
     ;    (layout/render "login.html")
-    ;  )
-
 
 
 (defn send-redir [where]
   (ring.util.response/redirect (str layout/*servlet-context* where)))
+  ;;(ring.util.response/redirect (str where)))
 
 (defn send-home [] (send-redir "/"))
 
-(defn edit-post [id date title body]
-  (println "boo" id date title body)
-  (if (empty? id)
-    (dippybird.db/insert-new-post! dippybird.db/db-spec body (.toDate (f/parse custom-formatter date)) title)
-    (dippybird.db/update-post! dippybird.db/db-spec (.toDate (f/parse custom-formatter date)) title body id))
+(defn create-id-from-date [date-str]
+  (let [ldt (.parse human-date-formatter date-str)]
+    (.format dir-date-formatter ldt)))
 
+(defn edit-post [id date title body]
+  (if (empty? id)
+    (db/insert-new-post! db/db-spec (create-id-from-date date) title body)
+    (db/update-post! db/db-spec id  title body))
   (send-home))
 
 (defn delete-page [id]
-  (dippybird.db/delete-post! dippybird.db/db-spec id)
+  (db/delete-post! db/db-spec id)
   (send-home))
 
 (defn set-user! [id {session :session}]
@@ -76,7 +71,6 @@
 (defn remove-user! [{session :session}]
   (-> (response "")
       (assoc :session (dissoc session :user))))
-
 
 ; http://www.luminusweb.net/docs/routes.md
 (defn file-path [path & [filename]]
